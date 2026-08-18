@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
   Bell,
   BookOpen,
+  Building2,
   CalendarDays,
   ChevronDown,
   CircleHelp,
@@ -21,6 +22,16 @@ import {
   WalletCards,
   X,
 } from 'lucide-react'
+
+type Role = 'admin' | 'staff' | 'client'
+
+const adminNav = [
+  { label: 'Admin overview', icon: LayoutDashboard },
+  { label: 'Branches', icon: Building2 },
+  { label: 'Staff access', icon: Users },
+  { label: 'Reports', icon: FileText },
+  { label: 'Settings', icon: Settings },
+]
 
 const staffNav = [
   { label: 'Overview', icon: LayoutDashboard },
@@ -69,8 +80,9 @@ function StatCard({ label, value, detail, icon: Icon }: { label: string; value: 
   )
 }
 
-function Sidebar({ mode, active, setActive, open, setOpen }: { mode: 'staff' | 'client'; active: string; setActive: (label: string) => void; open: boolean; setOpen: (open: boolean) => void }) {
-  const items = mode === 'staff' ? staffNav : clientNav
+function Sidebar({ role, active, setActive, open, setOpen }: { role: Role; active: string; setActive: (label: string) => void; open: boolean; setOpen: (open: boolean) => void }) {
+  const items = role === 'admin' ? adminNav : role === 'staff' ? staffNav : clientNav
+  const roleLabel = role === 'admin' ? 'Branch admin' : role === 'staff' ? 'Branch staff' : 'Client account'
   return (
     <aside className={`fixed inset-y-0 left-0 z-20 flex w-64 flex-col border-r border-border bg-sidebar px-4 py-5 transition-transform lg:static lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="flex items-center justify-between px-2">
@@ -80,7 +92,7 @@ function Sidebar({ mode, active, setActive, open, setOpen }: { mode: 'staff' | '
         </div>
         <button className="rounded-lg p-2 text-muted-foreground lg:hidden" onClick={() => setOpen(false)} aria-label="Close navigation"><X /></button>
       </div>
-      <div className="mt-8 rounded-xl bg-secondary px-3 py-3"><p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Viewing as</p><p className="mt-1 text-sm font-semibold text-foreground">{mode === 'staff' ? 'Branch & staff' : 'Client account'}</p></div>
+      <div className="mt-8 rounded-xl bg-secondary px-3 py-3"><p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Viewing as</p><p className="mt-1 text-sm font-semibold text-foreground">{roleLabel}</p></div>
       <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Main navigation">
         {items.map((item) => { const Icon = item.icon; return <button key={item.label} onClick={() => { setActive(item.label); setOpen(false) }} className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${active === item.label ? 'bg-primary text-primary-foreground' : 'text-sidebar-foreground hover:bg-sidebar-accent'}`}><span className="flex items-center gap-3"><Icon aria-hidden="true" />{item.label}</span>{item.count && <span className={`rounded-full px-2 py-0.5 text-xs ${active === item.label ? 'bg-primary-foreground/15' : 'bg-secondary'}`}>{item.count}</span>}</button> })}
       </nav>
@@ -103,9 +115,9 @@ function ClientDashboard() {
 }
 
 export default function Page() {
-  const [mode, setMode] = useState<'staff' | 'client'>('staff')
+  const [role, setRole] = useState<Role>('staff')
   const [active, setActive] = useState('Overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const switchMode = (next: 'staff' | 'client') => { setMode(next); setActive(next === 'staff' ? 'Overview' : 'My dashboard') }
-  return <main className="min-h-screen bg-background"><div className="flex min-h-screen"><Sidebar mode={mode} active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} /><div className="min-w-0 flex-1"><header className="flex h-20 items-center justify-between border-b border-border bg-background/95 px-5 sm:px-8"><div className="flex items-center gap-3"><button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary lg:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu /></button><div className="relative hidden md:block"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input aria-label="Search" placeholder="Search students, classes..." className="h-10 w-64 rounded-xl border border-input bg-card pl-10 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring" /></div></div><div className="flex items-center gap-3"><div className="flex rounded-xl border border-border bg-card p-1"><button onClick={() => switchMode('staff')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${mode === 'staff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Staff view</button><button onClick={() => switchMode('client')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${mode === 'client' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Client view</button></div><button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary" aria-label="Notifications"><Bell /><span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-accent" /></button><div className="hidden items-center gap-2 border-l border-border pl-3 sm:flex"><div className="flex size-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{mode === 'staff' ? 'AK' : 'JD'}</div><div className="hidden lg:block"><p className="text-sm font-semibold text-foreground">{mode === 'staff' ? 'Aisha Khan' : 'Jordan Davis'}</p><p className="text-xs text-muted-foreground">{mode === 'staff' ? 'Branch coordinator' : 'Parent account'}</p></div><ChevronDown className="text-muted-foreground" /></div></div></header><div className="mx-auto flex max-w-[1500px] flex-col gap-7 p-5 sm:p-8">{mode === 'staff' ? <StaffDashboard /> : <ClientDashboard />}</div></div></div></main>
+  const switchRole = (next: Role) => { setRole(next); setActive(next === 'admin' ? 'Admin overview' : next === 'staff' ? 'Overview' : 'My dashboard') }
+  return <main className="min-h-screen bg-background"><div className="flex min-h-screen"><Sidebar role={role} active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} /><div className="min-w-0 flex-1"><header className="flex h-20 items-center justify-between border-b border-border bg-background/95 px-5 sm:px-8"><div className="flex items-center gap-3"><button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary lg:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu /></button><div className="relative hidden md:block"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input aria-label="Search" placeholder="Search students, classes..." className="h-10 w-64 rounded-xl border border-input bg-card pl-10 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring" /></div></div><div className="flex items-center gap-3"><div className="flex rounded-xl border border-border bg-card p-1"><button onClick={() => switchRole('admin')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'admin' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Admin</button><button onClick={() => switchRole('staff')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'staff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Staff</button><button onClick={() => switchRole('client')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'client' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Client</button></div><button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary" aria-label="Notifications"><Bell /><span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-accent" /></button><div className="hidden items-center gap-2 border-l border-border pl-3 sm:flex"><div className="flex size-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{role === 'admin' ? 'AD' : role === 'staff' ? 'AK' : 'JD'}</div><div className="hidden lg:block"><p className="text-sm font-semibold text-foreground">{role === 'admin' ? 'Amara Daniels' : role === 'staff' ? 'Aisha Khan' : 'Jordan Davis'}</p><p className="text-xs text-muted-foreground">{role === 'admin' ? 'School administrator' : role === 'staff' ? 'Branch coordinator' : 'Parent account'}</p></div><ChevronDown className="text-muted-foreground" /></div></div></header><div className="mx-auto flex max-w-[1500px] flex-col gap-7 p-5 sm:p-8">{role === 'client' ? <ClientDashboard /> : <StaffDashboard />}</div></div></div></main>
 }
