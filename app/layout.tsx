@@ -1,10 +1,13 @@
 import { Analytics } from '@vercel/analytics/next'
+import { Geist } from 'next/font/google'
 import type { Metadata, Viewport } from 'next'
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Perfect Wisdom School | Portal',
+  description: 'A connected school portal for branch staff and families.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -39,8 +42,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className="bg-background">
+      <body className={`${geist.variable} antialiased`}>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
