@@ -7,8 +7,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Perfect Wisdom School | Portal',
-  description: 'A connected school portal for branch staff and families.',
-  generator: 'v0.app',
+  description: 'A connected school portal for students, staff, administrators, and families.',
   icons: {
     icon: [
       {
