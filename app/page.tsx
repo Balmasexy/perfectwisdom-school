@@ -152,96 +152,285 @@ function ClientDashboard() {
 
 
 function AdminSection({ section }: { section: string }) {
+  if (section === "Admin overview") {
+    const stats = [
+      { label: "Total students", value: "248", detail: "12 new this term", icon: Users },
+      { label: "Active staff", value: "24", detail: "22 active today", icon: Users },
+      { label: "Branches", value: "3", detail: "All branches active", icon: Building2 },
+      { label: "Attendance", value: "94.6%", detail: "2.4% above last week", icon: ClipboardCheck },
+    ]
+
+    const branchSummary = [
+      { name: "Main Campus", students: 124, staff: 12, attendance: "96%" },
+      { name: "North Branch", students: 78, staff: 7, attendance: "93%" },
+      { name: "West Branch", students: 46, staff: 5, attendance: "91%" },
+    ]
+
+    const activities = [
+      { title: "New student registered", detail: "Sofia Williams was added to Main Campus", time: "8 min ago" },
+      { title: "Staff account updated", detail: "Teacher access was updated for North Branch", time: "32 min ago" },
+      { title: "Attendance completed", detail: "Grade 4 attendance was submitted", time: "1 hr ago" },
+      { title: "Payment recorded", detail: "School fee payment received", time: "2 hrs ago" },
+    ]
+
+    return (
+      <section className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-medium text-primary">Administrator dashboard</p>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+              Admin Overview
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Monitor students, staff, branches, attendance, and daily school operations from one place.
+            </p>
+          </div>
+          <span className="w-fit rounded-full bg-accent/20 px-3 py-1.5 text-xs font-semibold text-accent-foreground">
+            System overview
+          </span>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stats.map((item) => (
+            <StatCard
+              key={item.label}
+              label={item.label}
+              value={item.value}
+              detail={item.detail}
+              icon={item.icon}
+            />
+          ))}
+        </div>
+
+        <div className="grid gap-5 xl:grid-cols-[1.35fr_1fr]">
+          <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-semibold text-card-foreground">Branch performance</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Current operational snapshot
+                </p>
+              </div>
+              <Building2 className="text-primary" aria-hidden="true" />
+            </div>
+
+            <div className="mt-5 flex flex-col gap-3">
+              {branchSummary.map((branch) => (
+                <div
+                  key={branch.name}
+                  className="rounded-xl border border-border p-4"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-card-foreground">{branch.name}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {branch.students} students · {branch.staff} staff
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-primary">
+                      {branch.attendance}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: branch.attendance }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div>
+              <h2 className="font-semibold text-card-foreground">Pending attention</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Items that may need administrator review
+              </p>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-3">
+              <div className="rounded-xl border border-border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-card-foreground">Staff access requests</span>
+                  <span className="rounded-full bg-accent/20 px-2 py-1 text-xs font-bold text-accent-foreground">3</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">New access requests awaiting review.</p>
+              </div>
+
+              <div className="rounded-xl border border-border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-card-foreground">Attendance reviews</span>
+                  <span className="rounded-full bg-accent/20 px-2 py-1 text-xs font-bold text-accent-foreground">5</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">Classes with incomplete attendance records.</p>
+              </div>
+
+              <div className="rounded-xl border border-border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-card-foreground">System notices</span>
+                  <span className="rounded-full bg-secondary px-2 py-1 text-xs font-bold text-primary">2</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">School-wide notices requiring attention.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div className="grid gap-5 xl:grid-cols-[1fr_1.35fr]">
+          <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-semibold text-card-foreground">Recent activity</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Latest school operations</p>
+              </div>
+              <Bell className="text-primary" aria-hidden="true" />
+            </div>
+
+            <div className="mt-5 flex flex-col gap-4">
+              {activities.map((activity) => (
+                <div key={activity.title} className="flex gap-3">
+                  <div className="mt-1 size-2.5 shrink-0 rounded-full bg-accent" />
+                  <div>
+                    <p className="text-sm font-semibold text-card-foreground">{activity.title}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{activity.detail}</p>
+                    <p className="mt-1 text-[11px] text-muted-foreground">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <div>
+              <h2 className="font-semibold text-card-foreground">School summary</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Key information for today
+              </p>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl bg-secondary p-4">
+                <p className="text-xs font-medium text-muted-foreground">Students present</p>
+                <p className="mt-1 text-2xl font-semibold text-foreground">234</p>
+              </div>
+
+              <div className="rounded-xl bg-secondary p-4">
+                <p className="text-xs font-medium text-muted-foreground">Classes running</p>
+                <p className="mt-1 text-2xl font-semibold text-foreground">18</p>
+              </div>
+
+              <div className="rounded-xl bg-secondary p-4">
+                <p className="text-xs font-medium text-muted-foreground">Staff present</p>
+                <p className="mt-1 text-2xl font-semibold text-foreground">22</p>
+              </div>
+
+              <div className="rounded-xl bg-secondary p-4">
+                <p className="text-xs font-medium text-muted-foreground">Pending tasks</p>
+                <p className="mt-1 text-2xl font-semibold text-foreground">07</p>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-xl border border-border p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                  <LayoutDashboard aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-card-foreground">Everything is connected</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Use the administrator menu to manage each part of the school.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    )
+  }
+
   const content: Record<string, { title: string; description: string; cards: { label: string; value: string; detail: string }[] }> = {
-    "Admin overview": {
-      title: "Admin Overview",
-      description: "Monitor and manage Perfect Wisdom School from one central dashboard.",
-      cards: [
-        { label: "Students", value: "248", detail: "Currently enrolled" },
-        { label: "Staff", value: "32", detail: "Active staff members" },
-        { label: "Branches", value: "3", detail: "School branches" },
-        { label: "Attendance", value: "94%", detail: "Average this week" },
-      ],
-    },
     "Branches": {
       title: "Branches",
-      description: "Manage school branches, locations, and branch administrators.",
+      description: "Manage school branches and their operational information.",
       cards: [
-        { label: "Main Campus", value: "Active", detail: "Main school branch" },
-        { label: "North Branch", value: "Active", detail: "Branch location" },
-        { label: "South Branch", value: "Active", detail: "Branch location" },
+        { label: "Active branches", value: "3", detail: "All branches operational" },
+        { label: "Students", value: "248", detail: "Across all branches" },
+        { label: "Staff", value: "24", detail: "Assigned across branches" },
       ],
     },
     "Staff access": {
       title: "Staff Access",
-      description: "Manage staff accounts and control access to school systems.",
+      description: "Manage staff accounts, access levels, and permissions.",
       cards: [
-        { label: "Active staff", value: "32", detail: "Staff with access" },
-        { label: "Pending", value: "4", detail: "Awaiting approval" },
-        { label: "Restricted", value: "2", detail: "Access restricted" },
+        { label: "Active staff", value: "24", detail: "Accounts currently active" },
+        { label: "Pending requests", value: "3", detail: "Waiting for approval" },
+        { label: "Roles", value: "3", detail: "Configured access roles" },
       ],
     },
     "Reports": {
       title: "Reports",
-      description: "Review school performance, attendance, students, and staff reports.",
+      description: "Review school performance and operational reports.",
       cards: [
-        { label: "Attendance report", value: "94%", detail: "Current attendance" },
-        { label: "Student report", value: "248", detail: "Students recorded" },
-        { label: "Staff report", value: "32", detail: "Active staff" },
-        { label: "Academic report", value: "86%", detail: "Average performance" },
+        { label: "Attendance", value: "94.6%", detail: "Current school average" },
+        { label: "Students", value: "248", detail: "Registered students" },
+        { label: "Reports ready", value: "12", detail: "Available for review" },
       ],
     },
     "Settings": {
       title: "Settings",
-      description: "Configure Perfect Wisdom School settings and administrative preferences.",
+      description: "Configure school-wide preferences and administrator settings.",
       cards: [
-        { label: "School profile", value: "Ready", detail: "School information" },
-        { label: "Notifications", value: "On", detail: "System notifications" },
-        { label: "Security", value: "Protected", detail: "Account security" },
+        { label: "School profile", value: "Active", detail: "Profile information configured" },
+        { label: "Notifications", value: "On", detail: "Administrator notifications enabled" },
+        { label: "Security", value: "Good", detail: "No pending configuration" },
       ],
     },
   }
 
-  const data = content[section] ?? content["Admin overview"]
+  const current = content[section] ?? content["Branches"]
 
   return (
-    <>
-      <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-medium text-primary">Perfect Wisdom School</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{data.title}</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{data.description}</p>
-        </div>
-        <div className="rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground">
-          Administrator
-        </div>
-      </section>
+    <section className="flex flex-col gap-6">
+      <div>
+        <p className="text-sm font-medium text-primary">Administrator</p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          {current.title}
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          {current.description}
+        </p>
+      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {data.cards.map((card) => (
-          <article key={card.label} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-            <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-primary">{card.value}</p>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">{card.detail}</p>
-          </article>
+      <div className="grid gap-4 sm:grid-cols-3">
+        {current.cards.map((card) => (
+          <StatCard
+            key={card.label}
+            label={card.label}
+            value={card.value}
+            detail={card.detail}
+            icon={Users}
+          />
         ))}
       </div>
 
-      <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <h2 className="font-semibold text-card-foreground">{data.title} management</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          This section is ready for the detailed {data.title.toLowerCase()} management tools.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <button className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90">
-            Add new
-          </button>
-          <button className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-card-foreground hover:bg-secondary">
-            View records
-          </button>
+      <article className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-secondary text-primary">
+            <LayoutDashboard aria-hidden="true" />
+          </div>
+          <div>
+            <h2 className="font-semibold text-card-foreground">{current.title} management</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              This section is ready for the next management module.
+            </p>
+          </div>
         </div>
-      </section>
-    </>
+      </article>
+    </section>
   )
 }
 
