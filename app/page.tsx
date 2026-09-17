@@ -150,11 +150,113 @@ function ClientDashboard() {
   return <><section><p className="text-sm font-medium text-primary">Tuesday, October 8, 2024</p><h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Welcome back, Jordan</h1><p className="mt-2 text-sm text-muted-foreground">Keep up with your children&apos;s learning journey.</p></section><div className="grid gap-4 sm:grid-cols-3"><StatCard label="Overall progress" value="78%" detail="↑ 8% this month" icon={ClipboardCheck} /><StatCard label="Attendance" value="96%" detail="Excellent attendance" icon={CalendarDays} /><StatCard label="Next payment" value="$180" detail="Due October 15" icon={WalletCards} /></div><div className="grid gap-5 xl:grid-cols-[1.35fr_1fr]"><article className="rounded-2xl border border-border bg-card p-5 shadow-sm"><div className="flex items-center justify-between"><div><h2 className="font-semibold text-card-foreground">Your children</h2><p className="mt-1 text-sm text-muted-foreground">A snapshot of their latest progress</p></div><button className="text-sm font-semibold text-primary">View all</button></div><div className="mt-5 flex flex-col gap-4"><div className="flex items-center gap-4 rounded-xl bg-secondary p-4"><div className="flex size-12 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">AM</div><div className="flex-1"><p className="font-semibold text-card-foreground">Ava Mitchell</p><p className="mt-1 text-xs text-muted-foreground">Grade 4 · Class A</p></div><div className="text-right"><p className="text-lg font-semibold text-primary">84%</p><p className="text-xs text-muted-foreground">progress</p></div></div><div className="flex items-center gap-4 rounded-xl bg-secondary p-4"><div className="flex size-12 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground">JL</div><div className="flex-1"><p className="font-semibold text-card-foreground">James Lee</p><p className="mt-1 text-xs text-muted-foreground">Grade 2 · Class B</p></div><div className="text-right"><p className="text-lg font-semibold text-primary">72%</p><p className="text-xs text-muted-foreground">progress</p></div></div></div></article><article className="rounded-2xl border border-border bg-card p-5 shadow-sm"><h2 className="font-semibold text-card-foreground">Upcoming</h2><p className="mt-1 text-sm text-muted-foreground">Important dates for your family</p><div className="mt-5 flex flex-col gap-4"><div className="flex gap-3"><div className="rounded-xl bg-primary px-2.5 py-2 text-center text-primary-foreground"><span className="block text-xs">OCT</span><span className="text-lg font-bold">10</span></div><div><p className="font-medium text-card-foreground">Parent-teacher meeting</p><p className="mt-1 text-xs text-muted-foreground">4:00 PM · Main office</p></div></div><div className="flex gap-3"><div className="rounded-xl bg-secondary px-2.5 py-2 text-center text-primary"><span className="block text-xs">OCT</span><span className="text-lg font-bold">15</span></div><div><p className="font-medium text-card-foreground">Tuition payment due</p><p className="mt-1 text-xs text-muted-foreground">$180.00 · Monthly tuition</p></div></div></div></article></div><div className="grid gap-5 xl:grid-cols-2"><article className="rounded-2xl border border-border bg-card p-5 shadow-sm"><h2 className="font-semibold text-card-foreground">Announcements</h2><div className="mt-4 flex flex-col gap-4"><div className="border-l-2 border-primary pl-4"><p className="font-medium text-card-foreground">Autumn term showcase</p><p className="mt-1 text-sm text-muted-foreground">Join us on October 25 for an evening of student presentations.</p></div><div className="border-l-2 border-accent pl-4"><p className="font-medium text-card-foreground">School holiday reminder</p><p className="mt-1 text-sm text-muted-foreground">The school will be closed on October 21.</p></div></div></article><article className="rounded-2xl border border-border bg-card p-5 shadow-sm"><div className="flex items-center justify-between"><h2 className="font-semibold text-card-foreground">Quick links</h2><button className="text-sm font-semibold text-primary">See all</button></div><div className="mt-4 grid grid-cols-2 gap-3"><button className="flex items-center gap-3 rounded-xl border border-border p-3 text-left hover:bg-secondary"><FileText className="text-primary" /><span className="text-sm font-medium">Report cards</span></button><button className="flex items-center gap-3 rounded-xl border border-border p-3 text-left hover:bg-secondary"><WalletCards className="text-primary" /><span className="text-sm font-medium">Payments</span></button><button className="flex items-center gap-3 rounded-xl border border-border p-3 text-left hover:bg-secondary"><MessageSquare className="text-primary" /><span className="text-sm font-medium">Contact school</span></button><button className="flex items-center gap-3 rounded-xl border border-border p-3 text-left hover:bg-secondary"><CalendarDays className="text-primary" /><span className="text-sm font-medium">School calendar</span></button></div></article></div></>
 }
 
+
+function AdminSection({ section }: { section: string }) {
+  const content: Record<string, { title: string; description: string; cards: { label: string; value: string; detail: string }[] }> = {
+    "Admin overview": {
+      title: "Admin Overview",
+      description: "Monitor and manage Perfect Wisdom School from one central dashboard.",
+      cards: [
+        { label: "Students", value: "248", detail: "Currently enrolled" },
+        { label: "Staff", value: "32", detail: "Active staff members" },
+        { label: "Branches", value: "3", detail: "School branches" },
+        { label: "Attendance", value: "94%", detail: "Average this week" },
+      ],
+    },
+    "Branches": {
+      title: "Branches",
+      description: "Manage school branches, locations, and branch administrators.",
+      cards: [
+        { label: "Main Campus", value: "Active", detail: "Main school branch" },
+        { label: "North Branch", value: "Active", detail: "Branch location" },
+        { label: "South Branch", value: "Active", detail: "Branch location" },
+      ],
+    },
+    "Staff access": {
+      title: "Staff Access",
+      description: "Manage staff accounts and control access to school systems.",
+      cards: [
+        { label: "Active staff", value: "32", detail: "Staff with access" },
+        { label: "Pending", value: "4", detail: "Awaiting approval" },
+        { label: "Restricted", value: "2", detail: "Access restricted" },
+      ],
+    },
+    "Reports": {
+      title: "Reports",
+      description: "Review school performance, attendance, students, and staff reports.",
+      cards: [
+        { label: "Attendance report", value: "94%", detail: "Current attendance" },
+        { label: "Student report", value: "248", detail: "Students recorded" },
+        { label: "Staff report", value: "32", detail: "Active staff" },
+        { label: "Academic report", value: "86%", detail: "Average performance" },
+      ],
+    },
+    "Settings": {
+      title: "Settings",
+      description: "Configure Perfect Wisdom School settings and administrative preferences.",
+      cards: [
+        { label: "School profile", value: "Ready", detail: "School information" },
+        { label: "Notifications", value: "On", detail: "System notifications" },
+        { label: "Security", value: "Protected", detail: "Account security" },
+      ],
+    },
+  }
+
+  const data = content[section] ?? content["Admin overview"]
+
+  return (
+    <>
+      <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-medium text-primary">Perfect Wisdom School</p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{data.title}</h1>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{data.description}</p>
+        </div>
+        <div className="rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground">
+          Administrator
+        </div>
+      </section>
+
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {data.cards.map((card) => (
+          <article key={card.label} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
+            <p className="mt-2 text-3xl font-semibold tracking-tight text-primary">{card.value}</p>
+            <p className="mt-2 text-xs font-medium text-muted-foreground">{card.detail}</p>
+          </article>
+        ))}
+      </div>
+
+      <section className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <h2 className="font-semibold text-card-foreground">{data.title} management</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          This section is ready for the detailed {data.title.toLowerCase()} management tools.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90">
+            Add new
+          </button>
+          <button className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-card-foreground hover:bg-secondary">
+            View records
+          </button>
+        </div>
+      </section>
+    </>
+  )
+}
+
 export default function Page() {
   const [role, setRole] = useState<Role>('staff')
   const [active, setActive] = useState('Roles')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [roleNotice, setRoleNotice] = useState('')
   const switchRole = (next: Role) => { setRole(next); setActive(next === 'admin' ? 'Roles' : next === 'staff' ? 'Overview' : 'My dashboard') }
-  return <main className="min-h-screen bg-background"><div className="flex min-h-screen"><Sidebar role={role} active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} /><div className="min-w-0 flex-1"><header className="flex h-20 items-center justify-between border-b border-border bg-background/95 px-5 sm:px-8"><div className="flex items-center gap-3"><button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary lg:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu /></button><div className="relative hidden md:block"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input aria-label="Search" placeholder="Search students, classes..." className="h-10 w-64 rounded-xl border border-input bg-card pl-10 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring" /></div></div><div className="flex items-center gap-3"><div className="flex rounded-xl border border-border bg-card p-1"><button onClick={() => switchRole('admin')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'admin' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Admin</button><button onClick={() => switchRole('staff')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'staff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Staff</button><button onClick={() => switchRole('client')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'client' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Client</button></div><button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary" aria-label="Notifications"><Bell /><span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-accent" /></button><div className="hidden items-center gap-2 border-l border-border pl-3 sm:flex"><div className="flex size-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{role === 'admin' ? 'AD' : role === 'staff' ? 'AK' : 'JD'}</div><div className="hidden lg:block"><p className="text-sm font-semibold text-foreground">{role === 'admin' ? 'Amara Daniels' : role === 'staff' ? 'Aisha Khan' : 'Jordan Davis'}</p><p className="text-xs text-muted-foreground">{role === 'admin' ? 'School administrator' : role === 'staff' ? 'Branch coordinator' : 'Parent account'}</p></div><ChevronDown className="text-muted-foreground" /></div></div></header><div className="mx-auto flex max-w-[1500px] flex-col gap-7 p-5 sm:p-8">{role === 'admin' && active === 'Roles' ? <RolesPanel onRoleCreated={(createdRole) => setRoleNotice(`${createdRole.name} was created successfully.`)} /> : role === 'client' ? <ClientDashboard /> : <StaffDashboard />}{roleNotice && <div role="status" className="fixed bottom-5 right-5 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-card-foreground shadow-lg">{roleNotice}</div>}</div></div></div></main>
+  return <main className="min-h-screen bg-background"><div className="flex min-h-screen"><Sidebar role={role} active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} /><div className="min-w-0 flex-1"><header className="flex h-20 items-center justify-between border-b border-border bg-background/95 px-5 sm:px-8"><div className="flex items-center gap-3"><button className="rounded-xl p-2 text-muted-foreground hover:bg-secondary lg:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation"><Menu /></button><div className="relative hidden md:block"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" /><input aria-label="Search" placeholder="Search students, classes..." className="h-10 w-64 rounded-xl border border-input bg-card pl-10 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring" /></div></div><div className="flex items-center gap-3"><div className="flex rounded-xl border border-border bg-card p-1"><button onClick={() => switchRole('admin')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'admin' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Admin</button><button onClick={() => switchRole('staff')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'staff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Staff</button><button onClick={() => switchRole('client')} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${role === 'client' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}>Client</button></div><button className="relative rounded-xl p-2 text-muted-foreground hover:bg-secondary" aria-label="Notifications"><Bell /><span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-accent" /></button><div className="hidden items-center gap-2 border-l border-border pl-3 sm:flex"><div className="flex size-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{role === 'admin' ? 'AD' : role === 'staff' ? 'AK' : 'JD'}</div><div className="hidden lg:block"><p className="text-sm font-semibold text-foreground">{role === 'admin' ? 'Amara Daniels' : role === 'staff' ? 'Aisha Khan' : 'Jordan Davis'}</p><p className="text-xs text-muted-foreground">{role === 'admin' ? 'School administrator' : role === 'staff' ? 'Branch coordinator' : 'Parent account'}</p></div><ChevronDown className="text-muted-foreground" /></div></div></header><div className="mx-auto flex max-w-[1500px] flex-col gap-7 p-5 sm:p-8">{role === 'admin'
+  ? active === 'Roles'
+    ? <RolesPanel onRoleCreated={(createdRole) => setRoleNotice(`${createdRole.name} was created successfully.`)} />
+    : <AdminSection section={active} />
+  : role === 'client'
+    ? <ClientDashboard />
+    : <StaffDashboard />
+}{roleNotice && <div role="status" className="fixed bottom-5 right-5 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold text-card-foreground shadow-lg">{roleNotice}</div>}</div></div></div></main>
 }
